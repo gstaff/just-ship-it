@@ -70,6 +70,6 @@ def ship_it():
         calling_module = importlib.import_module(os.path.basename(hostfile)[:-3])
     functions = inspect.getmembers(calling_module, inspect.isfunction)
     for fn_name, fn in functions:
-        if os.path.basename(fn.__code__.co_filename) == os.path.basename(hostfile) or '<ipython-input' in fn.__code__.co_filename:
+        if os.path.basename(fn.__code__.co_filename) == os.path.basename(hostfile) or 'ipykernel_launcher.py' in hostfile:
             add_resource(fn_name, fn)
     app.run()
