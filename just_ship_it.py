@@ -53,7 +53,6 @@ def ship_it():
         # TODO: use api.param? or keep all in json? query params have size limits but are bookmarkable, but I guess
         # TODO: autogen a requests script to query server from python?
         # TODO: Validation
-        # TODO: Move all of this out into a lib
         # TODO: Better error messages, see fire trace @api.response(404, 'User not found.') api.abort(404)
         # TODO: working with file uploads?
         # TODO: Hot reloading???
@@ -64,12 +63,14 @@ def ship_it():
         model = api.model(f'{name}_parameters', {n: fields.String(required=True, example=f"<{n}>") for n in parameter_names})
         api.doc(description=str(sig), body=model)(resource)
 
-    if 'ipykernel_launcher.py' in hostfile:
+    is_running_in_notebook = 'ipykernel_launcher.py' in hostfile
+    if is_running_in_notebook:
         calling_module = sys.modules['__main__']
     else:
         calling_module = importlib.import_module(os.path.basename(hostfile)[:-3])
     functions = inspect.getmembers(calling_module, inspect.isfunction)
     for fn_name, fn in functions:
-        if os.path.basename(fn.__code__.co_filename) == os.path.basename(hostfile) or 'ipykernel_launcher.py' in hostfile:
+        if os.path.basename(fn.__code__.co_filename) == os.path.basename(hostfile)\
+                or (is_running_in_notebook and fn_name != 'ship_it'):
             add_resource(fn_name, fn)
     app.run()
