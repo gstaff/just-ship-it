@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="just-ship-it",
-    version="0.0.5",
+    version="0.0.6",
     author="Grant Stafford",
     description="For when you just need to ship your Python code.",
     long_description=long_description,

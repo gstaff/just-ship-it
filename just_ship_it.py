@@ -20,6 +20,7 @@ def ship_it():
     app.config.SWAGGER_UI_REQUEST_DURATION = True
 
     hostfile = sys.argv[0]
+    is_running_in_notebook = 'ipykernel_launcher.py' in hostfile
 
     hash = hashlib.md5(open(hostfile, 'rb').read()).hexdigest()
     filename = os.path.basename(hostfile)
@@ -63,7 +64,6 @@ def ship_it():
         model = api.model(f'{name}_parameters', {n: fields.String(required=True, example=f"<{n}>") for n in parameter_names})
         api.doc(description=str(sig), body=model)(resource)
 
-    is_running_in_notebook = 'ipykernel_launcher.py' in hostfile
     if is_running_in_notebook:
         calling_module = sys.modules['__main__']
     else:
@@ -71,6 +71,6 @@ def ship_it():
     functions = inspect.getmembers(calling_module, inspect.isfunction)
     for fn_name, fn in functions:
         if os.path.basename(fn.__code__.co_filename) == os.path.basename(hostfile)\
-                or (is_running_in_notebook and fn_name != 'ship_it'):
+                or (is_running_in_notebook and '<ipython-input' in str(fn.__code__.co_filename)):
             add_resource(fn_name, fn)
     app.run()
