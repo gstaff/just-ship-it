@@ -1,4 +1,6 @@
 # just-ship-it 🚀
+[![PyPI version](https://badge.fury.io/py/just-ship-it.svg)](https://badge.fury.io/py/just-ship-it)
+
 For when you just need to ship your Python code.
 
 ## Compatability
