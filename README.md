@@ -16,6 +16,8 @@ Notebooks have [an issue](https://stackoverflow.com/questions/51180917/python-fl
 ```bash
 !pip install flask==0.12.2
 ```
+See the [example notebook](https://colab.research.google.com/github/gstaff/just-ship-it/blob/master/examples/just_ship_it_example.ipynb) for a working example.
+
 
 ## Quickstart
 Just `from just_ship_it import ship_it` and `ship_it()`!
