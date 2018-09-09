@@ -65,7 +65,7 @@ def ship_it():
         api.doc(description=str(sig), body=model)(resource)
 
     if 'ipykernel_launcher.py' in hostfile:
-        calling_module = sys.modules[__name__]
+        calling_module = sys.modules['__main__']
     else:
         calling_module = importlib.import_module(os.path.basename(hostfile)[:-3])
     functions = inspect.getmembers(calling_module, inspect.isfunction)
