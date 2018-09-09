@@ -64,9 +64,12 @@ def ship_it():
         model = api.model(f'{name}_parameters', {n: fields.String(required=True, example=f"<{n}>") for n in parameter_names})
         api.doc(description=str(sig), body=model)(resource)
 
-    calling_module = importlib.import_module(os.path.basename(hostfile)[:-3])
+    if 'ipykernel_launcher.py' in hostfile:
+        calling_module = sys.modules[__name__]
+    else:
+        calling_module = importlib.import_module(os.path.basename(hostfile)[:-3])
     functions = inspect.getmembers(calling_module, inspect.isfunction)
     for fn_name, fn in functions:
-        if os.path.basename(fn.__code__.co_filename) == os.path.basename(hostfile):
+        if os.path.basename(fn.__code__.co_filename) == os.path.basename(hostfile) or '<ipython-input' in fn.__code__.co_filename:
             add_resource(fn_name, fn)
     app.run()
